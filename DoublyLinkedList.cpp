@@ -177,7 +177,21 @@ class DoublyLinkedList{
 			}
 			return a;
 		}
-		
+		DoublyLinkedList findUnique(){
+		    DoublyLinkedList temp;
+		    Node * node = Head;
+		    while (node !=NULL){
+		        if ( node == Head){
+		            temp.insertHead(node->value);
+		        }else{
+		            if (temp.search(node-> value) == -1){
+		                temp.insertTail(node->value);
+		            }
+		        }
+		        node = node->next;   
+		    }
+		    return temp;
+		}
 };
 
 int main(){
@@ -211,4 +225,15 @@ int main(){
 	cout<<endl<<endl;
 	cout<<"search 1 : " <<list.search(1)<<endl;
 	cout<<"get value from 1 : "<<list.getValue(1)->value;
+	cout<<endl;
+		list.insertHead(2);
+	list.insertTail(5);
+	list.insertTail(4);
+		list.insertHead(2);
+	list.insertTail(3);
+	list.insertTail(4);
+	list.printList();
+	cout<<"List findUnique: ";
+	DoublyLinkedList test = list.findUnique();
+	test.printList();
 }
