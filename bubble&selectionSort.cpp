@@ -68,9 +68,9 @@ int main()
 {
     test t;
     t.nhap();
-    //t.bubbleSort();
-    //t.bubbleDownSort();
-    //t.selectionSort();
-    //t.selectionDownSort();
+    //t.bubbleSortAsc();
+    //t.bubbleSortDesc();
+    //t.selectionSortAsc();
+    //t.selectionSortDesc();
     t.xuat();
 }
