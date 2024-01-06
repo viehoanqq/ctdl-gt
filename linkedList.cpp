@@ -1,143 +1,262 @@
 #include <iostream>
 using namespace std;
-struct Node{
-	int data;
-	Node * next;
+class Node{
+    public:
+        int value;
+        Node * next;
+        Node (int val){
+            value = val;
+            next = NULL;
+        }
 };
-
-Node* newNode(int Data)
-{
-	Node * node = new Node();
-	node->data = Data;
-	node->next = NULL;
-	return node;
-}
-class LinkedList{
-	private: 
-		int m_count=0;
-	public:
-		Node *Head;
-		Node *Tail;
-		void insertHead(int val)
-		{
-			Node * currentNode = newNode(val);
-			currentNode ->next = Head;
-			Head = currentNode;
-			if (m_count == 0)
-			{
-				Tail = Head;
+class linkedlist{
+    private:
+        int m_count=0;
+    public:
+        Node *Head;
+        Node *Tail;
+        
+        int Count(){
+            return m_count;
+        }
+        void insertHead(int val){
+            Node * node = new Node(val);
+            if (m_count == 0){
+                Head= node;
+                Tail=node;
+            }
+            else{
+                node->next = Head;
+                Head = node;
+            }
+            m_count++;
+        }
+        
+        void insertTail(int val){
+            Node * node = new Node (val);
+            if ( m_count == 0){
+                Head = node;
+                Tail = node;
+            }
+            else{
+                Tail->next = node;
+                Tail = node;
+            }
+            m_count++;
+            
+        }
+        
+        void insert(int val,int index){
+            Node * node = new Node(val);
+            Node * currentNode = Head;
+            if (index == 0){
+                insertHead(val);
+                return;
+            }
+            if (index == m_count -1)
+            {
+                insertTail(val);
+                return;
+            }
+            for (int i=0;i<index-1;i++){
+                currentNode = currentNode->next; //3 4 2 1 5
+            }
+            node ->next = currentNode->next;
+            currentNode->next =node;
+            
+            m_count++;
+        }
+        
+        void removeHead(){
+            if (m_count==0) 
+            return;
+            if (m_count==	1){
+            	Head=NULL;
+            	Tail = NULL;
+            	m_count--;
+            	return;
 			}
-			m_count++;
+            Node * node =Head;
+            Head = node ->next;
+            delete node;
+            m_count--;
+        }
+        void removeTail(){
+            if (m_count == 0) return;
+            if (m_count== 1){
+                Tail = NULL;
+                Head = NULL;
+                delete Tail;
+                m_count --;
+                return;
+            }
+            Node * currentNode = Head;
+            for (int i=0;i<m_count-2;i++)
+            {
+                currentNode = currentNode -> next;
+            }
+            delete Tail;
+            currentNode -> next = NULL;
+            Tail = currentNode;
+            m_count--;
+        }
+        
+        void remove(int index){
+            if (index == 0) return;
+            if (index == m_count-1){
+                removeTail();
+                return;
+            }
+            Node * currentNode = Head;
+            for (int i=0;i<index -1;i++)
+            {
+                currentNode = currentNode->next;
+            }
+            currentNode->next = currentNode->next->next;
+            m_count--;
+            
+        }
+        int search(int val){
+        	Node * currentNode = Head;
+        	int i=0;
+        	while (currentNode !=  NULL){
+        		if (currentNode->value == val)
+        		return i; 
+        		currentNode = currentNode -> next;
+        		i++;
+			}
+			return -1;
 		}
-		void insertTail(int val)
-		{
-			Node * currentNode = newNode(val);
-			if (m_count == 0)
-			{
-				Tail = currentNode;
-				Head = Tail;
-				m_count++;
-				return;
-			
-				
+        
+        void printList(){
+            if (m_count == 0){
+                cout<<"danh sach trong!";
+                return;
+            }
+            cout<<"so pt: "<<m_count<<endl;
+            Node * currentNode =Head;
+            while (currentNode != NULL){
+                cout<<currentNode->value<<" ";
+                currentNode = currentNode->next;
+            }
+            cout<<endl;
+        }
+        
+        int * toArray()
+        {
+        	int *a;
+        	int i=0;
+        	Node * currentNode = Head;
+        	while (currentNode != NULL)
+        	{
+        		a[i] = currentNode->value;
+        		i++;
+        		currentNode = currentNode ->next;
 			}
-			Tail->next= currentNode;
-			Tail = currentNode;
-			m_count++;
-	
-		}
-		void printList()
-		{
-			Node * currentNode = Head;
-			while (currentNode != NULL)
-			{
-				cout<< currentNode->data<<" ";
-				currentNode = currentNode->next;
-			}
-		}
-		void insert(int index, int val)
-		{
-			if (index < 0 && index >m_count)
-			{
-				cout<<"loi!";
-				return;
-			}
-			if (index== 0)
-			{
-				insertHead(val);
-				m_count++;
-				return;
-			}
-			Node * node=  newNode(val);
-			Node *currentNode = Head;
-			for (int i=0;i<index-1;i++)
-			{
-				currentNode = currentNode->next;
-			}
-			node ->next = currentNode->next;
-			currentNode->next = node;
-			m_count++;
+			return a;
+        	
 		}
 		
-		void removeHead()
+		int findMax()
 		{
-			Node *temp = Head;
-			Head = Head->next;
-			delete temp;
-			m_count--;
-		}
-		void removeTail()
-		{
-			Node *temp = Tail;
-			Node *currentNode = Head;
-			for (int i=0;i<m_count-2;i++)
-			{
-				currentNode = currentNode ->next;
-			}
-			currentNode->next = NULL;
-			Tail = currentNode;
-			m_count--;
-			delete temp;
-		}
-		
-		int getData(int index)
-		{
+			int max = INT_MIN;
 			Node * currentNode = Head;
-			for (int i=0; i<index ;i++)
-			{
-				currentNode = currentNode -> next;
-			}
-			return currentNode->data;
-		}
-		int  search(int val)
-		{
-			Node *currentNode = Head;
-			for (int i=0;i<m_count;i++)
-			{
-				if (currentNode ->data == val)
-				{
-					return i;
+			while (currentNode !=NULL){
+				if (currentNode->value > max ){
+					max = currentNode->value;
 				}
-				currentNode = currentNode->next;
 			}
+			return max;
 		}
 		
+		void findUnique(){
+			Node *node = Head;
+			
+			while (node!= NULL){
+				Node * node2 = Head;
+				bool flag = false;
+				int i=0;
+				while (node2!=node){
+					if (node2->value == node->value)
+						flag = true;
+					i++;
+					node2 = node2->next;
+						
+				}
+				node = node->next;
+				
+				if (flag){
+					remove(i);
+				}
+			}
+		}
+		void reverse() {
+    	Node *current = Head;
+    	Node *previous = NULL;
+    	Node *next = NULL;
+
+    	while (current != NULL) {
+        	next = current->next;
+        	current->next = previous;
+        	previous = current;
+        	current = next;
+    	}
+
+    	Head = previous;
+	}	
+	void removeAll() {
+	int count = m_count;
+    for (int i=0;i<count;i++)
+    {
+    	removeHead();
+    	printList();
+	}
+}
+        
 };
 
-int main()
-{
-	LinkedList list;
-	list.insertHead(3); //3 
-	list.insertHead(10) ; //10 3
-	list.insertTail(9); // 10 3 9
-	list.insert(2,999);// 10 3 999 9
-	list.insert(3,1); // 10 3 999 1 9
-	list.printList();
+int main(){
+    linkedlist list;
+    list.insertHead(1);
+    list.insertHead(2);
+    list.insertHead(4);
+    list.insertTail(5);
+    list.insertTail(10);
+    list.insertHead(3); //3 4 2 1 5
+    list.printList();
+    cout<<endl<<endl;
+    list.insert(6,1); //3 6 4 2 1 5
+    list.insert(7,0); // 7 3 6 4 2 1 5   
+    list.insert(8,7); // 7 3 6 4 2 1 5 8
+    list.printList();
+    cout<<endl<<endl;
+    list.removeHead();
+    list.removeTail();
+    list.printList();
+    list.remove(3);
+    list.printList();
+    
+    
+    cout<<"tim 1: "<<list.search(1);
+    int * arr = list.toArray();
+    cout<<endl;
+    cout<<"to array:"<<endl;
+    for (int i=0;i<list.Count();i++)
+    	cout<<arr[i]<<" ";
 	cout<<endl<<endl;
-	list.removeHead(); // 3 999 1 9
-	
+    list.insertHead(2);
+    list.insertHead(4);
+        list.insertHead(2);
+    list.insertHead(4);
+    list.printList();
+	cout<<"sau khi xoa pt trung lap:"<<endl;
+	list.findUnique();
 	list.printList();
-	
-	cout<<endl<<list.getData(1);
-	cout<<endl<<list.search(9);
+	list.reverse();
+	cout<<"sau khi dao nguoc:"<<endl;
+	list.printList();
+	cout<<"sau khi xoa all"<<endl;
+	list.removeAll();
+	list.printList();
 }
+
