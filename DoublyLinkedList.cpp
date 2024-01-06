@@ -1,187 +1,214 @@
 #include <iostream>
 using namespace std;
-struct Node{
-	int data;
-	Node * prev;
-	Node * next;
+class Node{
+	public:
+		int value;
+		Node* next;
+		Node* prev;
+		Node(int val){
+			value = val;
+			next=NULL;
+			prev= NULL;
+		}
 };
 
-Node *newNode(int val)
-{
-	Node *node = new Node();
-	node ->data =val;
-	node->next= NULL;
-	node ->prev = NULL;
-	return node;
-}
-
 class DoublyLinkedList{
-	private :
+	private:
 		int m_count=0;
 	public:
-		Node * Head = NULL ;
-		Node * Tail = NULL;
-		void printList()
-		{
-			Node *currentNode = Head;
-			while (currentNode != NULL)
-			{
-				cout<<currentNode ->data<<" ";
-				currentNode = currentNode ->next;
+		Node * Head;
+		Node * Tail;
+		int Count(){
+			return m_count;
+		}
+		void printList(){
+			if (m_count==0){
+				cout<<"danh sach rong"<<endl;
 			}
+			Node * node = Head;
+			while (node != NULL){
+				cout<<node->value<<" ";
+				node= node ->next;
+			}
+			cout<<endl;
+		}
+		void printReverseList(){
+			if (m_count==0){
+				cout<<"danh sach rong"<<endl;
+			}
+			Node *node = Tail;
+			while (node !=NULL){
+				cout<<node->value<<" ";
+				node = node->prev;
+			}
+			cout<<endl;
+		}
+		void insertHead(int val){
+			Node * node = new Node(val);
+			if (m_count==0){
+				Head=node;
+				Tail=node;
+				m_count++;
+			}else{
 			
-		}
-		void printDownList()
-		{
-			Node * currentNode = Tail;
-			while ( currentNode != NULL)
-			{
-				cout<<currentNode->data<< " ";
-				currentNode = currentNode ->prev;
+				node->next = Head;
+				Head->prev = node;
+				Head= node;
+				m_count++;
 			}
 		}
-	void insertHead(int val)
-	{
-    	Node *node = newNode(val);
-    	if (Head !=NULL){
-    	Head->prev = node;
-    	node ->next = Head;
-    	Head = node;
-    	}
-    	if ( Head == NULL)
-    	{
-    	Head=node;
-		Tail=Head;
-		}	
-    	m_count++;
-}
-		void insertTail(int val)
-		{
-			Node * node = newNode(val);
-			node ->prev = Tail;
+		void insertTail(int val){
+			Node *node  = new Node(val);
+			node->prev = Tail;
 			Tail->next = node;
 			Tail = node;
-			if (m_count == 0)
-			{
-				Head= Tail;
+			if (m_count==0){
+				Head=Tail;
 			}
-			m_count++;
+			m_count++;	
 		}
-		void insert(int index , int val)
-		{
-			Node * node = newNode(val);
-			Node * currentNode = Head;
-			if ( index < 0 && index > m_count) return;
-			for (int i=0;i<index -1 ;i++)
-			{
-				currentNode = currentNode->next;
+		void insert(int val,int index){
+			if (index < 0 || index >m_count){
+				cout<<"loi";
+				return;
 			}
-			node -> next = currentNode->next;
-			node -> prev = currentNode;
+			Node * node = new Node(val);
+			Node * currentNode = Head;
+			if (index == 0){
+				insertHead(val);
+				return;
+			}
+			if (index == Count()-1){
+				insertTail(val);
+				return;
+			}
+			for (int i=0;i<index-1;i++){
+				currentNode = currentNode->next; //1 3 6 2
+			}
+			node->next = currentNode->next;
+			node->prev = currentNode;
 			currentNode->next->prev = node;
-			currentNode->next = node;
+			currentNode->next= node;
 			m_count++;
-			
 		}
 		
-		void removeHead()
-		{
+		void removeHead(){
 			if (m_count==0) return;
-			if (m_count==1)
-			{
+			if (m_count ==1){
 				Head = NULL;
 				Tail = Head;
 				m_count--;
 				return;
 			}
-			Node *temp = Head;
-			Head = Head ->next;
-			Head->prev = NULL;
+			Node * node = Head;
+			Head = node->next;
+			Head->prev =NULL;
+			delete node;
 			m_count--;
-			delete temp;
 		}
-		void removeTail()
-		{
-			Node * node= Tail;
+		void removeTail(){
 			if (m_count==0) return;
-			if (m_count ==1 ) 
-			{
-				Tail=NULL;
-				Head = Tail;
-				m_count--;
+			if (m_count==1){
+				Tail= NULL;
+				Head= NULL;
+				m_count--; 
 				return;
 			}
-			Tail=Tail->prev;
-			Tail->next = NULL;
+			Node * temp = Tail;
+			Tail =temp->prev;
+			Tail->next=NULL;
+			delete temp;
 			m_count--;
-			delete node;
 		}
-		
-		int search(int val)
-		{
-			Node * currentNode = Head;
-			int i=0;
-			while ( currentNode != NULL)
-			{
-				if ( currentNode->data == val)
-				{
-					return i;
+		void remove(int val){
+			Node * node = Head;
+			bool flag = true;
+			while(node!=NULL){
+				if (node->value == val ){ // 2 3 7 1
+					if (node == Head){
+						removeHead();
+					} else 
+					if (node == Tail){
+						removeTail();
+					} else 
+						{
+						node->prev->next = node->next;
+						node->next->prev = node->prev;
+						}
+					flag =false;
+					m_count--;
 				}
-				currentNode = currentNode->next;
+				node = node->next;
+			}
+			if (flag){
+				cout<<"khong ton tai!"<<endl;
+			}
+		}
+		int search(int val){
+			Node * node = Head;
+			int i=0;
+			while (node!= NULL){
+				if (node ->value == val)
+				return i;
+				i++;
+				node = node->next;
+			}
+			return -1;
+		}
+		Node * getValue(int index){
+			if (index < 0 || index >= m_count){
+				cout<<"loi!";
+				return NULL ;
+			}
+			Node * node = Head;
+			for (int i=0;i<index;i++){
+				node = node->next;
+			}
+			return node;
+		}
+		int * toArray(){
+			int *a;
+			int i=0;
+			Node * node = Head;
+			while (node != NULL){
+				a[i] == node->value;
+				node = node ->next;
 				i++;
 			}
+			return a;
 		}
-		void remove(int index)
-		{
-			if (index < 0 and index >=m_count)
-			{
-				return ;
-			}
-			Node * currentNode = Head;
-			if (index == 0)
-			{
-				removeHead();
-				return;
-			}
-			if ( index == m_count-1)
-			{
-				removeTail();
-				return;
-			}
-			for (int i=0;i<index-1;i++)
-			{
-				currentNode = currentNode ->next;
-			}
-			
-			currentNode->next =currentNode->next->next;
-			currentNode->next->prev = currentNode;
-			m_count--;
-		}
+		
 };
 
-int main()
-{
+int main(){
 	DoublyLinkedList list;
-//	list.Head = newNode(1);
-	list.insertHead(9);
+	list.insertHead(1);
 	list.insertHead(3);
 	list.insertHead(2);
-	list.insertTail(999);
-	list.insertTail(11);
-	list.insertHead(0);
-	list.insert(3,4);
+	list.insertTail(5);
+	list.insertTail(4);
+	list.insertHead(6); // 6 2 3 1 5 4
 	list.printList();
-	cout<<endl;
-	list.removeHead();
+	list.printReverseList(); // 4 5 1 3 2 6
+	list.insert(7,3);
+	list.insert(8,0); // 8 6 2 3 7 1 5 4
+	list.printList();
+	list.printReverseList();
+	
+	cout<<endl<<endl;
+	cout<<"remove"<<endl;
+	list.removeHead(); 
+	list.removeHead();// 2 3 7 1 5 4
+	list.printList();
 	list.removeTail();
+	list.printList(); // 2 3 7 1 5
+	list.removeTail();  // 2 3 7 1
 	list.printList();
-	cout<<endl;
-	list.printDownList();
-	cout<<endl;
-	cout<<list.search(999);
-	cout<<endl;
+	list.remove(7); // 2 3 1
+	list.remove(71); // 2 3 1
 	list.printList();
-	cout<<endl;
-	list.remove(4);
-	list.printList();
+	list.printReverseList();
+	cout<<endl<<endl;
+	cout<<"search 1 : " <<list.search(1)<<endl;
+	cout<<"get value from 1 : "<<list.getValue(1)->value;
 }
