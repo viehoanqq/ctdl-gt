@@ -142,34 +142,32 @@ class linkedlist{
             cout<<endl;
         }
         
-        int * toArray()
-        {
-        	int *a;
-        	int i=0;
-        	Node * currentNode = Head;
-        	while (currentNode != NULL)
-        	{
-        		a[i] = currentNode->value;
-        		i++;
-        		currentNode = currentNode ->next;
-			}
-			return a;
-        	
-		}
+        int *toArray() {
+        int *a = new int[m_count];
+        int i = 0;
+        Node *currentNode = Head;
+        while (currentNode != NULL) {
+            a[i] = currentNode->value;
+            i++;
+            currentNode = currentNode->next;
+        }
+        return a;
+        }
 		
-		int findMax()
-		{
-			int max = INT_MIN;
-			Node * currentNode = Head;
-			while (currentNode !=NULL){
-				if (currentNode->value > max ){
-					max = currentNode->value;
-				}
-			}
-			return max;
-		}
-		
-		void findUnique(){
+		int findMax() {
+        Node *currentNode = Head;
+        int max = currentNode->value;
+        while (currentNode != NULL) {
+        if (currentNode->value > max) {
+            max = currentNode->value;
+        }
+            currentNode = currentNode->next;  // Added this line
+        }
+        return max;
+        }   
+        
+        
+	    void findUnique(){
 			Node *node = Head;
 			
 			while (node!= NULL){
@@ -190,28 +188,31 @@ class linkedlist{
 				}
 			}
 		}
+        
+        
 		void reverse() {
-    	Node *current = Head;
-    	Node *previous = NULL;
-    	Node *next = NULL;
+        Node *current = Head;
+        Node *previous = NULL;
+        Node *next = NULL;
 
-    	while (current != NULL) {
-        	next = current->next;
-        	current->next = previous;
-        	previous = current;
-        	current = next;
-    	}
+        while (current != NULL) {
+            next = current->next;
+            current->next = previous;
+            previous = current;
+            current = next;
+        }
 
-    	Head = previous;
-	}	
-	void removeAll() {
-	int count = m_count;
-    for (int i=0;i<count;i++)
-    {
-    	removeHead();
-    	printList();
-	}
-}
+        Head = previous;
+        }
+        
+        
+	    void removeAll() {
+	    int count = m_count;
+        while(Head!=NULL)
+        {
+    	    removeHead();
+	    }
+        }
         
 };
 
@@ -232,7 +233,6 @@ int main(){
     cout<<endl<<endl;
     list.removeHead();
     list.removeTail();
-    list.printList();
     list.remove(3);
     list.printList();
     
@@ -246,7 +246,7 @@ int main(){
 	cout<<endl<<endl;
     list.insertHead(2);
     list.insertHead(4);
-        list.insertHead(2);
+    list.insertHead(2);
     list.insertHead(4);
     list.printList();
 	cout<<"sau khi xoa pt trung lap:"<<endl;
@@ -258,5 +258,6 @@ int main(){
 	cout<<"sau khi xoa all"<<endl;
 	list.removeAll();
 	list.printList();
+	cout<<endl<<"tim max "+list.findMax();
 }
 
