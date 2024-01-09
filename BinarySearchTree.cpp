@@ -31,6 +31,7 @@ class BinarySearchTree{
         int countLeaf(Node * node);
         int count1nhanh(Node * node);
         int sum(Node * node);
+        int height(Node *node);
     public:
         void insert(int val);
         void printTreeInOrder();
@@ -45,8 +46,26 @@ class BinarySearchTree{
         int countLeaf();
         int count1nhanh();
         int sum();
+        int height();
 };
-int BinarySearchTree::sum(Node * node){
+
+int height(Node * node);
+int height();
+
+int BinarySearchTree::height(Node * node) {
+    if (node == NULL) {
+        return -1; // Height of an empty tree is -1
+    }
+
+    int leftHeight = height(node->left);
+    int rightHeight = height(node->right);
+
+    return max(leftHeight, rightHeight) + 1;
+}
+
+int BinarySearchTree::height() {
+    return height(root);
+}int BinarySearchTree::sum(Node * node){
     if (node ==NULL) return 0;
     int s= node->value;
     s+= sum(node->left);
@@ -256,5 +275,6 @@ int main(){
 
     cout<<"count of leaf : "<<bst.countLeaf();cout<<endl;
     cout<<"count 1 nhanh : "<<bst.count1nhanh();cout<<endl;
-    cout<<"sum = "<<bst.sum();
+    cout<<"sum = "<<bst.sum();cout<<endl;
+ cout<<"height="<<bst.height();
 }
