@@ -48,7 +48,7 @@ class BinarySearchTree{
 };
 int BinarySearchTree::sum(Node * node){
     if (node ==NULL) return 0;
-    int s=node->value;
+    int s= node->value;
     s+= sum(node->left);
     s+=sum(node->right);
     return s;
@@ -60,7 +60,7 @@ int BinarySearchTree::count1nhanh(Node * node){
     if (node == NULL) return 0;
     int dem=0;
     if ((node->right == NULL && node->left != NULL) || (node->right !=NULL && node->left==NULL)){
-        return 1;
+      dem= 1;
     }
     dem+= count1nhanh(node->left);
     dem+= count1nhanh(node->right);
@@ -73,13 +73,13 @@ int BinarySearchTree::count1nhanh(){
 int BinarySearchTree::countLeaf(Node * node){
     if (node == NULL ) return 0;
     int dem=0;
-    if (node->right ==NULL && node->left == NULL){
+    if (node->right ==NULL && node->left == NULL);
         return 1;
     }
     dem+=countLeaf(node->left);
     dem+=countLeaf(node->right);
     return dem;
-    
+
 }
 
 int BinarySearchTree::countLeaf(){
@@ -122,13 +122,13 @@ int BinarySearchTree::findLe(){
         }
         return node;
     }
-    
+
     void BinarySearchTree::printTreeInOrder(Node * node){
         if (node == NULL) return;
         printTreeInOrder(node->left);
         cout<<node->value<<" ";
         printTreeInOrder(node->right);
-        
+
     }
     void BinarySearchTree::printTreePostOrder(Node * node){
         if (node == NULL) return;
@@ -142,7 +142,7 @@ int BinarySearchTree::findLe(){
         printTreePreOrder(node->left);
         printTreePreOrder(node->right);
     }
-    
+
     Node * BinarySearchTree::search(Node *node, int val){
         if (node == NULL) return NULL;
         if ( node -> value == val) return node;
@@ -152,7 +152,7 @@ int BinarySearchTree::findLe(){
         }else
         return search(node->left , val);
     }
-    
+
     int BinarySearchTree::findMax(Node * node){
         if (node == NULL) return -1;
         else 
@@ -161,7 +161,7 @@ int BinarySearchTree::findLe(){
         else 
         return findMax(node->right);
     }
-    
+
     int BinarySearchTree::findMin(Node *node){
         if (node == NULL) return -1;
         else
@@ -169,7 +169,7 @@ int BinarySearchTree::findLe(){
         return node->value;
         return findMin(node->left);
     }
-    
+
     Node * BinarySearchTree::remove(Node * node, int val) {
     if (node == NULL) {
         return node;
@@ -231,7 +231,7 @@ int BinarySearchTree::findLe(){
     void BinarySearchTree::remove(int val){
         root = remove(root,val);
     }
-    
+
 int main(){
     BinarySearchTree bst;
     bst.insert(40);
@@ -250,22 +250,11 @@ int main(){
     cout<<" search 48: " <<bst.search(48); cout<<endl;
     cout<<" findMax : " <<bst.findMax(); cout<<endl;
     cout<<" findMin : " <<bst.findMin(); cout<<endl;
-    cout<<"remove 56 : ";bst.remove(16);cout<<endl;
     cout<<"find le: "<<bst.findLe();cout<<endl;
     bst.printTreeInOrder();
     cout<<" count : "<<bst.count();cout<<endl;
-    
+
     cout<<"count of leaf : "<<bst.countLeaf();cout<<endl;
     cout<<"count 1 nhanh : "<<bst.count1nhanh();cout<<endl;
     cout<<"sum = "<<bst.sum();
 }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
