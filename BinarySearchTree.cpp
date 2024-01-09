@@ -20,6 +20,8 @@ class BinarySearchTree{
     protected:
         Node * insert(Node * node, int val);
         void printTreeInOrder(Node * node);
+        void printTreePostOrder(Node *node);
+        void printTreePreOrder(Node * node);
         Node * search(Node *node,int val);
         int findMax(Node * node);
         int findMin(Node * node);
@@ -31,6 +33,8 @@ class BinarySearchTree{
         int findMax();
         int findMin();
         void remove(int val);
+        void printTreePostOrder();
+        void printTreePreOrder();
 };
 
 
@@ -57,6 +61,18 @@ class BinarySearchTree{
         cout<<node->value<<" ";
         printTreeInOrder(node->right);
         
+    }
+    void BinarySearchTree::printTreePostOrder(Node * node){
+        if (node == NULL) return;
+        printTreePostOrder(node->left);
+        printTreePostOrder(node->right);
+        cout<<node->value<<" ";
+    }
+    void BinarySearchTree::printTreePreOrder(Node *node){
+        if (node == NULL) return;
+        cout<<node->value<<" ";
+        printTreePreOrder(node->left);
+        printTreePreOrder(node->right);
     }
     
     Node * BinarySearchTree::search(Node *node, int val){
@@ -93,6 +109,13 @@ class BinarySearchTree{
     void BinarySearchTree::printTreeInOrder(){
         printTreeInOrder(root);
         cout<<endl;
+    }
+    void BinarySearchTree::printTreePostOrder(){
+        printTreePostOrder(root);
+        cout<<endl;
+    }
+    void BinarySearchTree::printTreePreOrder(){
+        printTreePreOrder();
     }
     bool BinarySearchTree::search(int val){
         Node * node = search(root,val);
